@@ -23,9 +23,15 @@ async def cmd_start(message: types.Message):
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def weather_tell(message: types.Message):
+    if message.text.isdigit():
+        await message.answer('Вы ввели не название города')
     en_city = to_en.translate(message.text)
-    answer = (get_weather(en_city))
-    await message.answer(answer)
+    try:
+        answer = (get_weather(en_city))
+        await message.answer(answer)
+    except IndexError:
+        await message.answer('Вы ввели несуществующий город')
+
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
