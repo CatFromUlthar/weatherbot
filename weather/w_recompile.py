@@ -1,5 +1,5 @@
 def recompile(w: dict) -> str:
-    city = w["name"]
+    city = w['name']
     description = w["weather"][0]["description"].title()
     temp = w["main"]["temp"]
     feels_like = w["main"]["feels_like"]

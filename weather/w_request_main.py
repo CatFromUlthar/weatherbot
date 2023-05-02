@@ -19,8 +19,3 @@ def get_weather(city: str) -> str:
     weather_all = requests.get(weather_link).json()
     weather_final = recompile(weather_all)
     return weather_final
-
-
-if __name__ == '__main__':
-    a = get_weather('London')
-    print(a)

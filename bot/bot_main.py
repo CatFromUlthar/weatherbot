@@ -3,7 +3,7 @@ import os
 from aiogram import Bot, Dispatcher, types, executor
 from weather.w_request_main import get_weather
 from aiogram.utils.exceptions import BotBlocked, ToMuchMessages, UserDeactivated, CantTalkWithBots
-from translate import Translator
+from deep_translator import GoogleTranslator
 
 config = configparser.ConfigParser()
 c_path = os.path.join(os.path.dirname(__file__), '..', 'config.ini')
@@ -13,7 +13,7 @@ token = config['keys']['bot_token']
 bot = Bot(token=token, parse_mode='HTML')
 dp = Dispatcher(bot)
 
-to_en = Translator(to_lang='en')
+to_en = GoogleTranslator(source='auto', target='en')
 
 
 @dp.message_handler(commands="start")
@@ -23,9 +23,8 @@ async def cmd_start(message: types.Message):
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def weather_tell(message: types.Message):
-    answer = to_en.translate(get_weather(message.text))
-    print(answer)
-    print(message.text)
+    en_city = to_en.translate(message.text)
+    answer = (get_weather(en_city))
     await message.answer(answer)
 
 if __name__ == '__main__':
