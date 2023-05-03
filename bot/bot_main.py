@@ -1,13 +1,9 @@
-import configparser
-import os
+from configs.config_reader import read_config
 from aiogram import Bot, Dispatcher, types, executor
 from weather.w_request_main import get_weather
 from bot_translator import translate
 
-config = configparser.ConfigParser()
-c_path = os.path.join(os.path.dirname(__file__), '..', 'config.ini')
-config.read(c_path)
-token = config['keys']['bot_token']
+token = read_config('bot_token')
 
 bot = Bot(token=token, parse_mode='HTML')
 dp = Dispatcher(bot)
@@ -21,11 +17,11 @@ async def cmd_start(message: types.Message):
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def weather_tell(message: types.Message):
     try:
-        en_city = translate(message.text)
+        en_city = translate(message.text.capitalize())
         answer = (get_weather(en_city))
         await message.answer(answer)
     except IndexError:
-        await message.answer('Вы ввели несуществующий город')
+        await message.answer('Такого города нет в нашей базе данных или вы ввели несуществующий город')
     except:
         await message.answer('Вы ввели некорректную информацию')
 
