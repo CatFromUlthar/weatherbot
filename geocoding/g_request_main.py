@@ -19,4 +19,4 @@ def get_geo(geo_all: list, param: str) -> float | str:
         name = geo_all[0][param]['ru']
         return name
     else:
-        raise ValueError("Wrong parameter. Only 'lon' or 'lat' allowed")
+        raise ValueError("Wrong parameter. Only 'lon', 'lat' or 'local_names' allowed")
