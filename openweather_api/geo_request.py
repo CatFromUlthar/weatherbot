@@ -10,6 +10,7 @@ class GeoParser:
 
     def get_json(self) -> list:
         link = f'http://api.openweathermap.org/geo/1.0/direct?q={self.city}&limit=1&appid={self.appid}'
-        connection_checker(link)
-        geo_all = requests.get(link).json()
+        resp = requests.get(link)
+        connection_checker(resp)
+        geo_all = resp.json()
         return geo_all
